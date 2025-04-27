@@ -1,36 +1,43 @@
-import { FC } from 'react';
+'use client';
+
+import { FC, useEffect, useState } from 'react';
 
 interface DarkSpot {
-  x: number; // percent from left
-  y: number; // percent from top
+  x: number;
+  y: number;
 }
 
-const darkSpots: DarkSpot[] = [
-  { x: 20, y: 30 }, // Example spot
-  { x: 55, y: 50 },
-  { x: 75, y: 70 },
-];
-
 const MapPage: FC = () => {
+  const [darkSpots, setDarkSpots] = useState<DarkSpot[]>([]);
+
+  useEffect(() => {
+  async function fetchDarkSpots() {
+    try {
+      const res = await fetch('/api/darkspots');
+      const data = await res.json();
+      setDarkSpots(data);
+    } catch (error) {
+      console.error('Failed to fetch dark spots:', error);
+    }
+  }
+
+    fetchDarkSpots();
+  }, []);
+
   return (
     <div className="relative w-full max-w-4xl mx-auto p-4">
-      {/* SJSU Campus Map */}
-      <img
-        src="SJSULightMap.png" // <-- make sure you have a real map image here
-        className="w-full h-auto rounded-md shadow-lg"
-      />
-
-      {/* Red Circles for Dark Spots */}
-      {darkSpots.map((spot, index) => (
+      <img src="/SJSULightMap.png" className="w-full h-auto rounded-md shadow-lg" />
+      
+      {darkSpots.map((spot, idx) => (
         <div
-          key={index}
-          className="absolute bg-red-500 rounded-full opacity-70"
+          key={idx}
+          className="absolute bg-red-600 rounded-full opacity-80"
           style={{
-            width: '20px',
-            height: '20px',
+            width: '50px',
+            height: '50px',
             left: `${spot.x}%`,
             top: `${spot.y}%`,
-            transform: 'translate(-50%, -50%)', // Center the dot
+            transform: 'translate(-50%, -50%)',
           }}
         ></div>
       ))}
