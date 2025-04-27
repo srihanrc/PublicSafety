@@ -1,7 +1,7 @@
 {
   "private": true,
-  "scripts": {
-    "dev": "next dev --turbopack",
+   "scripts": {
+    "dev": "next dev",
     "build": "next build --turbopack",
     "start": "next start",
     "delete": "rm -rf app/n"
